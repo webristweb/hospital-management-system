@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patients | City Care Hospital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+<div class="loader-overlay" id="loaderOverlay">
+  <div class="loader-logo"><i class="fas fa-hospital-alt"></i></div>
+  <div class="loader-text">City Care Hospital</div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fas fa-hospital-alt"></i></div>
+    <div class="brand-text"><h2>City Care</h2><span>Hospital Management</span></div>
+  </a>
+  <div class="sidebar-section">Main Menu</div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="patients.html" class="nav-item active"><i class="fas fa-users"></i> Patients</a>
+    <a href="doctors.html" class="nav-item"><i class="fas fa-user-md"></i> Doctors</a>
+    <a href="appointments.html" class="nav-item"><i class="fas fa-calendar-check"></i> Appointments</a>
+  </nav>
+  <div class="sidebar-section">Management</div>
+  <nav class="sidebar-nav">
+    <a href="pharmacy.html" class="nav-item"><i class="fas fa-pills"></i> Pharmacy</a>
+    <a href="billing.html" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Billing</a>
+  </nav>
+  <div class="sidebar-section">System</div>
+  <nav class="sidebar-nav">
+    <a href="#" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+    <a href="#" class="nav-item"><i class="fas fa-question-circle"></i> Help</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar"><i class="fas fa-user-shield"></i></div>
+      <div class="sidebar-user-info"><h4>Admin User</h4><span>Super Administrator</span></div>
+    </div>
+  </div>
+</aside>
+
+<div class="main-content">
+  <header class="header">
+    <div class="header-left">
+      <button class="menu-toggle" onclick="toggleSidebarMobile()"><i class="fas fa-bars"></i></button>
+      <div class="page-title">
+        <h1>Patient Management</h1>
+        <p>Manage and track all hospital patients</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-date"></div>
+      <button class="header-btn mobile-notif-btn" title="Notifications"><i class="fas fa-bell"></i><span class="notif-badge">3</span></button>
+      <div class="profile-dropdown">
+        <button class="profile-btn">
+          <div class="profile-avatar">A</div>
+          <div class="profile-info"><h4>Admin</h4><span>Super Admin</span></div>
+          <i class="fas fa-chevron-down" style="font-size:10px;color:var(--gray-400);margin-left:4px"></i>
+        </button>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item"><i class="fas fa-user"></i> My Profile</a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" style="color:var(--danger)"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="page-header animate-in">
+      <div class="page-header-title">
+        <h2><i class="fas fa-users" style="color:var(--primary);margin-right:8px"></i>All Patients</h2>
+        <p id="patientCount">Loading patients...</p>
+      </div>
+      <button class="btn btn-primary" onclick="openAddPatientModal()">
+        <i class="fas fa-user-plus"></i> Add New Patient
+      </button>
+    </div>
+
+    <div class="stats-grid" style="margin-bottom:24px" id="patientStats"></div>
+
+    <div class="card animate-in" style="margin-bottom:20px">
+      <div class="card-body" style="padding:16px 20px">
+        <div class="toolbar">
+          <div class="search-box" style="flex:2">
+            <i class="fas fa-search"></i>
+            <input type="text" class="form-control" id="searchInput" placeholder="Search by name, ID, disease, phone..." oninput="renderPatients()">
+          </div>
+          <select class="form-control filter-select" id="filterStatus" onchange="renderPatients()">
+            <option value="">All Status</option>
+            <option>Active</option><option>Discharged</option><option>Critical</option>
+          </select>
+          <select class="form-control filter-select" id="filterBlood" onchange="renderPatients()">
+            <option value="">All Blood Groups</option>
+            <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+            <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+          </select>
+          <select class="form-control filter-select" id="filterGender" onchange="renderPatients()">
+            <option value="">All Gender</option>
+            <option>Male</option><option>Female</option>
+          </select>
+          <button class="btn btn-light" onclick="clearFilters()"><i class="fas fa-undo"></i> Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card animate-in delay-2">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-table"></i> Patient Records</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-light btn-sm" onclick="exportCSV()"><i class="fas fa-download"></i> Export</button>
+          <button class="btn btn-success btn-sm" onclick="openAddPatientModal()"><i class="fas fa-plus"></i> Add</button>
+        </div>
+      </div>
+      <div class="card-body" style="padding:0">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th onclick="sortBy('id')">ID <i class="fas fa-sort"></i></th>
+                <th onclick="sortBy('name')">Patient <i class="fas fa-sort"></i></th>
+                <th onclick="sortBy('age')">Age <i class="fas fa-sort"></i></th>
+                <th>Blood</th>
+                <th>Phone</th>
+                <th onclick="sortBy('disease')">Disease <i class="fas fa-sort"></i></th>
+                <th>Doctor</th>
+                <th onclick="sortBy('admitDate')">Admit Date <i class="fas fa-sort"></i></th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="patientsTableBody"></tbody>
+          </table>
+        </div>
+        <div id="mobileCardList" class="mobile-card-list"></div>
+        <div id="paginationContainer" style="padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--gray-200);flex-wrap:wrap;gap:10px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Patient Modal -->
+<div class="modal-overlay" id="patientModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 id="modalTitle"><i class="fas fa-user-plus"></i> Add New Patient</h2>
+      <button class="modal-close" onclick="Modal.close('patientModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="patientForm" onsubmit="return false">
+        <input type="hidden" id="patientId">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="required">*</span></label>
+            <input type="text" class="form-control" id="patientName" name="name" placeholder="Enter full name" required>
+            <span class="form-error" id="patientName_err">Name is required</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number <span class="required">*</span></label>
+            <input type="tel" class="form-control" id="patientPhone" name="phone" placeholder="10-digit mobile number" required>
+            <span class="form-error" id="patientPhone_err">Valid phone required</span>
+          </div>
+        </div>
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label">Age <span class="required">*</span></label>
+            <input type="number" class="form-control" id="patientAge" name="age" min="0" max="120" placeholder="Age" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender <span class="required">*</span></label>
+            <select class="form-control" id="patientGender" name="gender" required>
+              <option value="">Select Gender</option>
+              <option>Male</option><option>Female</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Blood Group <span class="required">*</span></label>
+            <select class="form-control" id="patientBlood" name="blood" required>
+              <option value="">Select</option>
+              <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+              <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="patientEmail" name="email" placeholder="email@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Admission Date <span class="required">*</span></label>
+            <input type="date" class="form-control" id="patientAdmitDate" name="admitDate" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <input type="text" class="form-control" id="patientAddress" name="address" placeholder="Full address">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Disease / Diagnosis <span class="required">*</span></label>
+            <input type="text" class="form-control" id="patientDisease" name="disease" placeholder="Primary diagnosis" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assigned Doctor <span class="required">*</span></label>
+            <select class="form-control" id="patientDoctor" name="doctor" required>
+              <option value="">Select Doctor</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-control" id="patientStatus" name="status">
+              <option>Active</option><option>Discharged</option><option>Critical</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <input type="text" class="form-control" id="patientNotes" name="notes" placeholder="Additional notes">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-light" onclick="Modal.close('patientModal')"><i class="fas fa-times"></i> Cancel</button>
+      <button class="btn btn-primary" onclick="savePatient()"><i class="fas fa-save"></i> Save Patient</button>
+    </div>
+  </div>
+</div>
+
+<!-- View Patient Modal -->
+<div class="modal-overlay" id="viewPatientModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2><i class="fas fa-eye"></i> Patient Details</h2>
+      <button class="modal-close" onclick="Modal.close('viewPatientModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="viewPatientBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-light" onclick="Modal.close('viewPatientModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal modal-sm">
+    <div class="modal-body">
+      <div class="confirm-dialog">
+        <div class="confirm-icon">🗑️</div>
+        <h3 id="confirmTitle">Delete Patient?</h3>
+        <p id="confirmMessage">This will permanently remove the patient record.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-light" onclick="Confirm.cancel()">Cancel</button>
+      <button class="btn btn-danger" onclick="Confirm.confirm()"><i class="fas fa-trash"></i> Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Navigation (Mobile) -->
+<nav class="bottom-nav" id="bottomNav">
+  <div class="bottom-nav-inner">
+    <a href="index.html" class="bottom-nav-item"><i class="fas fa-tachometer-alt"></i><span>Home</span></a>
+    <a href="patients.html" class="bottom-nav-item active"><i class="fas fa-users"></i><span>Patients</span></a>
+    <a href="appointments.html" class="bottom-nav-item"><i class="fas fa-calendar-check"></i><span>Appts</span></a>
+    <a href="billing.html" class="bottom-nav-item"><i class="fas fa-file-invoice-dollar"></i><span>Billing</span></a>
+    <button class="bottom-nav-item bottom-nav-more" onclick="toggleMoreDrawer()"><i class="fas fa-th-large"></i><span>More</span></button>
+  </div>
+</nav>
+<div class="drawer-overlay" onclick="toggleMoreDrawer()"></div>
+<div class="more-drawer" id="moreDrawer">
+  <div class="more-drawer-handle"></div>
+  <div class="more-drawer-title">More Options</div>
+  <div class="more-drawer-grid">
+    <a href="doctors.html" class="more-drawer-item">
+      <div class="more-drawer-icon" style="background:linear-gradient(135deg,#1a73e8,#0d47a1)"><i class="fas fa-user-md"></i></div>
+      <span>Doctors</span>
+    </a>
+    <a href="pharmacy.html" class="more-drawer-item">
+      <div class="more-drawer-icon" style="background:linear-gradient(135deg,#7c4dff,#4527a0)"><i class="fas fa-pills"></i></div>
+      <span>Pharmacy</span>
+    </a>
+    <a href="#" class="more-drawer-item">
+      <div class="more-drawer-icon" style="background:linear-gradient(135deg,#00bcd4,#006064)"><i class="fas fa-cog"></i></div>
+      <span>Settings</span>
+    </a>
+    <a href="#" class="more-drawer-item">
+      <div class="more-drawer-icon" style="background:linear-gradient(135deg,#00c853,#00897b)"><i class="fas fa-question-circle"></i></div>
+      <span>Help</span>
+    </a>
+  </div>
+</div>
+</nav>
+<div class="drawer-overlay" onclick="toggleMoreDrawer()"></div>
+<div class="more-drawer">
+  <div class="more-drawer-handle"></div>
+  <div class="more-drawer-grid">
+    <a href="doctors.html" class="more-drawer-item"><i class="fas fa-user-md"></i><span>Doctors</span></a>
+    <a href="pharmacy.html" class="more-drawer-item"><i class="fas fa-pills"></i><span>Pharmacy</span></a>
+    <a href="#" class="more-drawer-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+  </div>
+</div>
+
+<script src="utils.js"></script>
+<script src="dashboard.js"></script>
+<script src="patients.js"></script>
+<script src="mobile.js"></script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | City Care Hospital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader-overlay" id="loaderOverlay">
+  <div class="loader-logo"><i class="fas fa-hospital-alt"></i></div>
+  <div class="loader-text">City Care Hospital</div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-brand">
+    <div class="brand-icon"><i class="fas fa-hospital-alt"></i></div>
+    <div class="brand-text"><h2>City Care</h2><span>Hospital Management</span></div>
+  </a>
+  <div class="sidebar-section">Main Menu</div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="patients.html" class="nav-item"><i class="fas fa-users"></i> Patients</a>
+    <a href="doctors.html" class="nav-item"><i class="fas fa-user-md"></i> Doctors</a>
+    <a href="appointments.html" class="nav-item"><i class="fas fa-calendar-check"></i> Appointments</a>
+  </nav>
+  <div class="sidebar-section">Management</div>
+  <nav class="sidebar-nav">
+    <a href="pharmacy.html" class="nav-item"><i class="fas fa-pills"></i> Pharmacy</a>
+    <a href="billing.html" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Billing</a>
+  </nav>
+  <div class="sidebar-section">System</div>
+  <nav class="sidebar-nav">
+    <a href="#" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+    <a href="#" class="nav-item"><i class="fas fa-question-circle"></i> Help</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar"><i class="fas fa-user-shield"></i></div>
+      <div class="sidebar-user-info"><h4>Admin User</h4><span>Super Administrator</span></div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <button class="menu-toggle" onclick="toggleSidebarMobile()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="page-title">
+        <h1>Dashboard</h1>
+        <p>Welcome back, Admin! Here's what's happening today.</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-date"></div>
+      <button class="header-btn mobile-notif-btn" title="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="notif-badge">3</span>
+      </button>
+      <button class="header-btn" title="Messages"><i class="fas fa-envelope"></i></button>
+      <div class="profile-dropdown">
+        <button class="profile-btn">
+          <div class="profile-avatar">A</div>
+          <div class="profile-info"><h4>Admin</h4><span>Super Admin</span></div>
+          <i class="fas fa-chevron-down" style="font-size:10px;color:var(--gray-400);margin-left:4px"></i>
+        </button>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item"><i class="fas fa-user"></i> My Profile</a>
+          <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" style="color:var(--danger)"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <div class="page-content">
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card stat-card-1 animate-in delay-1">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div class="stat-info">
+          <h3 id="statPatients">0</h3>
+          <p>Total Patients</p>
+          <div class="stat-trend up hide-mobile"><i class="fas fa-arrow-up"></i> 12% this month</div>
+        </div>
+      </div>
+      <div class="stat-card stat-card-2 animate-in delay-2">
+        <div class="stat-icon"><i class="fas fa-user-md"></i></div>
+        <div class="stat-info">
+          <h3 id="statDoctors">0</h3>
+          <p>Total Doctors</p>
+          <div class="stat-trend up hide-mobile"><i class="fas fa-arrow-up"></i> 3 new this month</div>
+        </div>
+      </div>
+      <div class="stat-card stat-card-3 animate-in delay-3">
+        <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+        <div class="stat-info">
+          <h3 id="statAppointments">0</h3>
+          <p>Today's Appts</p>
+          <div class="stat-trend up hide-mobile"><i class="fas fa-arrow-up"></i> 8 more than yesterday</div>
+        </div>
+      </div>
+      <div class="stat-card stat-card-4 animate-in delay-4">
+        <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
+        <div class="stat-info">
+          <h3 id="statRevenue">0</h3>
+          <p>Revenue</p>
+          <div class="stat-trend up hide-mobile"><i class="fas fa-arrow-up"></i> 18% vs last month</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card animate-in" style="margin-bottom:24px">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+      </div>
+      <div class="card-body">
+        <div class="quick-actions">
+          <a href="patients.html" class="quick-action-btn qa-blue">
+            <div class="qa-icon"><i class="fas fa-user-plus"></i></div>
+            <span>Add Patient</span>
+          </a>
+          <a href="appointments.html" class="quick-action-btn qa-green">
+            <div class="qa-icon"><i class="fas fa-calendar-plus"></i></div>
+            <span>New Appointment</span>
+          </a>
+          <a href="doctors.html" class="quick-action-btn qa-orange">
+            <div class="qa-icon"><i class="fas fa-stethoscope"></i></div>
+            <span>Add Doctor</span>
+          </a>
+          <a href="pharmacy.html" class="quick-action-btn qa-purple">
+            <div class="qa-icon"><i class="fas fa-pills"></i></div>
+            <span>Add Medicine</span>
+          </a>
+          <a href="billing.html" class="quick-action-btn qa-teal">
+            <div class="qa-icon"><i class="fas fa-file-invoice"></i></div>
+            <span>Generate Bill</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="grid-2 animate-in" style="margin-bottom:24px">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="fas fa-chart-bar"></i> Monthly Patient Trends</div>
+          <span class="badge badge-primary">Last 7 Months</span>
+        </div>
+        <div class="card-body">
+          <div class="chart-container" style="height:260px">
+            <canvas id="monthlyChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="fas fa-chart-pie"></i> Department Distribution</div>
+          <span class="badge badge-success">By Patients</span>
+        </div>
+        <div class="card-body">
+          <div class="chart-container" style="height:260px">
+            <canvas id="deptChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Data -->
+    <div class="grid-2 animate-in">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="fas fa-calendar-alt"></i> Today's Appointments</div>
+          <a href="appointments.html" class="btn btn-outline btn-sm">View All</a>
+        </div>
+        <div class="card-body" style="padding:0">
+          <div class="table-container">
+            <table class="table">
+              <thead><tr><th>ID</th><th>Patient</th><th>Doctor</th><th>Time</th><th>Type</th><th>Status</th></tr></thead>
+              <tbody id="recentAppointments"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="fas fa-user-injured"></i> Recent Patients</div>
+          <a href="patients.html" class="btn btn-outline btn-sm">View All</a>
+        </div>
+        <div class="card-body" id="recentPatients"></div>
+      </div>
+    </div>
+  </div><!-- end page-content -->
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <i class="fas fa-hospital-alt"></i>
+        <span>City Care Hospital</span>
+      </div>
+      <div class="footer-text">
+        &copy; 2025 City Care HMS &bull; All rights reserved
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Support</a>
+        <a href="#">v2.0</a>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- end main-content -->
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal modal-sm">
+    <div class="modal-body">
+      <div class="confirm-dialog">
+        <div class="confirm-icon">⚠️</div>
+        <h3 id="confirmTitle">Are you sure?</h3>
+        <p id="confirmMessage">This action cannot be undone.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-light" onclick="Confirm.cancel()">Cancel</button>
+      <button class="btn btn-danger" onclick="Confirm.confirm()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Navigation (Mobile) -->
+<nav class="bottom-nav" id="bottomNav">
+  <div class="bottom-nav-inner">
+    <a href="index.html" class="bottom-nav-item active">
+      <i class="fas fa-tachometer-alt"></i>
+      <span>Home</span>
+    </a>
+    <a href="patients.html" class="bottom-nav-item">
+      <i class="fas fa-users"></i>
+      <span>Patients</span>
+    </a>
+    <a href="appointments.html" class="bottom-nav-item">
+      <i class="fas fa-calendar-check"></i>
+      <span>Appts</span>
+    </a>
+    <a href="billing.html" class="bottom-nav-item">
+      <i class="fas fa-file-invoice-dollar"></i>
+      <span>Billing</span>
+    </a>
+    <button class="bottom-nav-item bottom-nav-more" onclick="toggleMoreDrawer()">
+      <i class="fas fa-th-large"></i>
+      <span>More</span>
+    </button>
+  </div>
+</nav>
+
+<!-- More Drawer -->
+<div class="drawer-overlay" onclick="toggleMoreDrawer()"></div>
+<div class="more-drawer" id="moreDrawer">
+  <div class="more-drawer-handle"></div>
+  <div class="more-drawer-title">More Options</div>
+  <div class="more-drawer-grid">
+    <a href="doctors.html" class="more-drawer-item">
+      <div class="more-drawer-icon" style="background:linear-gradient(135deg,#1a73e8,#0d47a1)">
+        <i class="fas fa-user-md"></i>
+      </div>
+      <span>Doctors</span>
+    </a>
+    <a href="pharmacy.html" class="more-drawer-item">
+      <div class="more-drawer-icon" style="background:linear-gradient(135deg,#7c4dff,#4527a0)">
+        <i class="fas fa-pills"></i>
+      </div>
+      <span>Pharmacy</span>
+    </a>
+    <a href="#" class="more-drawer-item">
+      <div class="more-drawer-icon" style="background:linear-gradient(135deg,#00bcd4,#006064)">
+        <i class="fas fa-cog"></i>
+      </div>
+      <span>Settings</span>
+    </a>
+    <a href="#" class="more-drawer-item">
+      <div class="more-drawer-icon" style="background:linear-gradient(135deg,#00c853,#00897b)">
+        <i class="fas fa-question-circle"></i>
+      </div>
+      <span>Help</span>
+    </a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="utils.js"></script>
+<script src="dashboard.js"></script>
+<script src="mobile.js"></script>
+</body>
+</html>
